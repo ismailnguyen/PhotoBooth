@@ -6,6 +6,7 @@ using PhotoBooth.Services;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace PhotoBooth
 {
@@ -25,6 +26,8 @@ namespace PhotoBooth
             //startCamera();
 
             _cloudService = new CloudService();
+
+            
         }
 
         private void InitializeComboBox()
@@ -42,46 +45,57 @@ namespace PhotoBooth
             startButton.IsEnabled = e.AddedItems.Count > 0;
         }
 
+        /// <summary>
+        /// On button start click, hide button, start camera and show it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnStartButtonClick(object sender, RoutedEventArgs e)
         {
-            var cameraId = (WebCameraId)comboBox.SelectedItem;
-            webCameraControl.StartCapture(cameraId);
-        }
+            //MessageDialogResult result = this.ShowMessageAsync("Event name", "Some message").ConfigureAwait(false);
 
-        private void OnStopButtonClick(object sender, RoutedEventArgs e)
-        {
-            webCameraControl.StopCapture();
-        }
-
-        private void OnImageButtonClick(object sender, RoutedEventArgs e)
-        {
-            /*var dialog = new SaveFileDialog { Filter = "Bitmap Image|*.bmp" };
-            if (dialog.ShowDialog() == true)
-            {
-                webCameraControl.GetCurrentImage().Save(dialog.FileName);
-            }*/
-
-            string photoName = string.Format(
-                        "{0}-{1}.jpg",
-                        "Mariage",
-                        DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")
-                    );
-
-            
-            IProcessing process = new Processing(webCameraControl.GetCurrentImage());
-            Bitmap result = process.negativ();
-
-            result.Save(photoName);
-
-            _cloudService.Upload(photoName);
+            startCamera();
         }
 
         private void startCamera()
         {
-            List<WebCameraId> cameraIds = webCameraControl.GetVideoCaptureDevices().ToList();
-            var first = cameraIds.FirstOrDefault();
-            var second = cameraIds.First();
-            webCameraControl.StartCapture(cameraIds.FirstOrDefault());
+            var cameraId = (WebCameraId)comboBox.SelectedItem;
+            webCameraControl.StartCapture(cameraId);
+
+            startButton.Visibility = Visibility.Hidden;
+            webCameraControl.Visibility = Visibility.Visible;
+            takePhotoButton.Visibility = Visibility.Visible;
+        }
+
+        private void OnAboutClick(object sender, RoutedEventArgs e)
+        {
+            flyout.IsOpen = !flyout.IsOpen;
+        }
+
+        private void OnTakePhotoClick(object sender, RoutedEventArgs e)
+        {
+            if (webCameraControl.IsCapturing)
+            {
+                /*var dialog = new SaveFileDialog { Filter = "Bitmap Image|*.bmp" };
+                if (dialog.ShowDialog() == true)
+                {
+                    webCameraControl.GetCurrentImage().Save(dialog.FileName);
+                }*/
+
+                string photoName = string.Format(
+                            "{0}-{1}.jpg",
+                            "Mariage",
+                            DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")
+                        );
+
+
+                IProcessing process = new Processing(webCameraControl.GetCurrentImage());
+                Bitmap result = process.negativ();
+
+                result.Save(photoName);
+
+                _cloudService.Upload(photoName);
+            }
         }
     }
 }
