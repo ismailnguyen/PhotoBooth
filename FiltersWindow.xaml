@@ -1,12 +1,110 @@
-﻿<Window x:Class="PhotoBooth.FiltersWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PhotoBooth"
-        mc:Ignorable="d"
-        Title="FiltersWindow" Height="300" Width="300">
+﻿<Controls:MetroWindow 
+    x:Class="PhotoBooth.FiltersWindow"
+    xmlns:local="clr-namespace:PhotoBooth"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
+    Title="Filters"
+    
+    ShowTitleBar="True"
+    ShowCloseButton="True"
+    ShowMaxRestoreButton="True"
+    ShowIconOnTitleBar="True"
+    Height="700" Width="1200"
+    
+    Icon="Assets/small-logo.png"
+    ResizeMode="CanResizeWithGrip"
+    BorderThickness="0" 
+    GlowBrush="Black"
+    WindowStyle="None"
+    WindowStartupLocation="CenterScreen">
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Image Name="photo" Grid.Row="0" />
         
+        <Grid Grid.Row="1" HorizontalAlignment="Right" Width="1192">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Click="FilterOriginal">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/filter-original.png"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
+            <Button Grid.Column="1" Click="FilterNegative">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/filter-negative.png"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Grid.Column="2" Click="FilterGray">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/filter-gray.jpg" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Grid.Column="3" Click="FilterSepia">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/filter-sepia.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Grid.Column="4" Click="FilterCartoon">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/filter-cartoon.jpg" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Image Name="filterBlue" Grid.Column="0"/>
+            <Image Name="filterLowContrast" Grid.Column="0" />
+            <Image Name="filterHighContrast" Grid.Column="0" />
+            <Image Name="filterBright" Grid.Column="0"/>
+            <Image Name="filterRed" Grid.Column="0" />
+            <Image Name="filterGreen" Grid.Column="0" />
+        </Grid>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button
+                Grid.Column="0"
+                Content="Cancel"
+                Click="Cancel"
+                Style="{DynamicResource SquareButtonStyle}" />
+
+            <Button
+                Grid.Column="1"
+                Content="Save"
+                Click="Save"
+                Style="{StaticResource AccentedSquareButtonStyle}" />
+        </Grid>
+
     </Grid>
-</Window>
+
+</Controls:MetroWindow>

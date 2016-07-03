@@ -16,6 +16,10 @@ namespace PhotoBooth
 
         Bitmap green();
 
+        Bitmap cartoon(int matrixSize = 20);
+
+        Bitmap median(int matrixSize = 15, int bias = 0, bool grayscale = false);
+
         /// <summary>
         ///     Permet de changer la luminosité par défaut 100
         ///         0 < 255  penche vers le blanc

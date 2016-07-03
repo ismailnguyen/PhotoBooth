@@ -67,19 +67,18 @@ namespace PhotoBooth
                             DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")
                         );
 
-                // Apply filter on photo
-                IProcessing process = new Processing(webCameraControl.GetCurrentImage());
-                Bitmap result = process.negativ();
-
-                // Save photo to local storage
-                //result.Save(photoName);
-
-                FiltersWindow filtersWindow = new FiltersWindow();
-                filtersWindow.Show();
-
-                // Save photo to cloud storage
-                //_cloudService.Upload(photoName);
+                // Take photo and show filters panel
+                showFilters(photoName, webCameraControl.GetCurrentImage());
             }
+        }
+
+        /// <summary>
+        /// Open filters window
+        /// </summary>
+        /// <param name="photo">Taken photo</param>
+        private void showFilters(string photoName, Bitmap bitmap)
+        {
+            new FiltersWindow(photoName, bitmap).Show();
         }
     }
 }

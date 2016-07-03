@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\BitmapUtils.cs" />
     <Compile Include="FiltersWindow.xaml.cs">
       <DependentUpon>FiltersWindow.xaml</DependentUpon>
     </Compile>
@@ -165,6 +166,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\aperture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\filter-cartoon.jpg" />
+    <Resource Include="Assets\filter-gray.jpg" />
+    <Resource Include="Assets\filter-negative.png" />
+    <Resource Include="Assets\filter-original.png" />
+    <Resource Include="Assets\filter-sepia.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
