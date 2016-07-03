@@ -5,22 +5,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
     Title="Photo Booth"
+    
+    ShowTitleBar="True"
     ShowCloseButton="True"
     ShowMaxRestoreButton="True"
     ShowIconOnTitleBar="True"
+    
     Icon="Assets/small-logo.png"
     ResizeMode="CanResizeWithGrip"
     BorderThickness="0" 
     GlowBrush="Black"
-    Width="1400" 
-    Height="800" 
-    MinWidth="400" 
-    MinHeight="250"
-    WindowStartupLocation="CenterScreen">
+    WindowStyle="None"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout Header="About" Position="Right" Width="200" Name="flyout">
+            <Controls:Flyout Header="About" Position="Right" Width="350" Name="flyout">
                 <TextBlock>
                     Photo Booth
                     
@@ -49,17 +50,13 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="120" />
         </Grid.RowDefinitions>
-
-        
-        
-        <Button x:Name="startButton" Grid.Column="0" Grid.Row="0" Style="{DynamicResource SquareButtonStyle}" Content="Start" Height="40" Width="100" IsEnabled="False" Click="OnStartButtonClick" />
 
         <wpf:WebCameraControl
             x:Name="webCameraControl"
@@ -68,12 +65,16 @@
             Grid.Column="0"
             Grid.Row="0" />
 
-        <!-- Hidden combobox which contains list of available camera devices -->
-        <ComboBox x:Name="comboBox" Grid.Column="1" Grid.Row="1" DisplayMemberPath="Name" Visibility="Hidden" SelectionChanged="OnSelectionChanged" />
-
-        <Button x:Name="takePhotoButton" Grid.Column="1" Grid.Row="1" Style="{DynamicResource MetroCircleButtonStyle}" IsEnabled="False" BorderThickness="0" BorderBrush="Transparent" Height="120" Width="120" Click="OnTakePhotoClick">
+        <Button x:Name="takePhotoButton" 
+                Grid.Column="1" Grid.Row="1"
+                Padding="0, 0, 0, 20"
+                Style="{DynamicResource MetroCircleButtonStyle}" 
+                Visibility="Hidden"
+                BorderThickness="0" BorderBrush="Transparent"
+                Height="120" Width="120" 
+                Click="OnTakePhotoClick">
             <StackPanel>
-                <Image Source="Assets/shutter.png" Height="100"/>
+                <Image Source="Assets/aperture.png" Height="100"/>
             </StackPanel>
         </Button>
         
