@@ -31,23 +31,19 @@
         <Grid Grid.Row="0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Image Name="photo" Grid.Column="0" />
-            <ListView Grid.Column="1" Name="Thumbnails">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="1" HorizontalAlignment="Stretch"  MouseLeftButtonDown="item_clicked"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ListView.ItemTemplate>
+            <ListBox Grid.Column="1" Name="Thumbnails" SelectedItem="{Binding SelectedSection}">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <Image Source="{Binding Path}" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Stretch="UniformToFill" />
+                        <StackPanel Orientation="Vertical" >
+                            <Image Margin="3" Height="100" Width="100" Source="{Binding Path}"/>
+                            <TextBlock Margin="3"  Text="{Binding Name}"/>
                         </StackPanel>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
         </Grid>
         

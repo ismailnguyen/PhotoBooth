@@ -144,11 +144,12 @@ namespace PhotoBooth
             List<ImageModel> test = new List<ImageModel>();
             foreach (var file in files)
             {
-               
+
                 ImageModel id = new ImageModel()
                 {
                     Path = new BitmapImage(new Uri(file.ToString())),
                     FileName = Path.GetFileName(file),
+                    Name = Path.GetFileName(file)
                 };
                 test.Add(id);
                /* BitmapImage img = new BitmapImage();
@@ -173,6 +174,25 @@ namespace PhotoBooth
         {
            
             MessageBox.Show(sender.ToString());
+        }
+
+        private ListBoxItem _selectedSection;
+        public ListBoxItem SelectedSection
+        {
+            get {
+                MessageBox.Show(_selectedSection.ToString());
+
+                return _selectedSection; }
+            set
+            {
+                _selectedSection = value;
+                RaisePropertyChanged("SelectedSection");
+            }
+        }
+
+        private void RaisePropertyChanged(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }
