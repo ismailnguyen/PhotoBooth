@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:wpf="clr-namespace:WebEye.Controls.Wpf;assembly=WebEye.Controls.Wpf.WebCameraControl"
     Title="Filters"
+    Loaded="LoadImageList"
     
     ShowTitleBar="True"
     ShowCloseButton="True"
@@ -27,9 +28,30 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Image Name="photo" Grid.Row="0" />
+        <Grid Grid.Row="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="500"/>
+            </Grid.ColumnDefinitions>
+            <Image Name="photo" Grid.Column="0" />
+            <ListView Grid.Column="1" Name="Thumbnails">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1" HorizontalAlignment="Stretch"  MouseLeftButtonDown="item_clicked"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Image Source="{Binding Path}" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Stretch="UniformToFill" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
         
-        <Grid Grid.Row="1" HorizontalAlignment="Right" Width="1192">
+        <Grid Grid.Row="1"  Width="1192">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

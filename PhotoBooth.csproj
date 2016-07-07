@@ -103,6 +103,7 @@
     <Compile Include="FiltersWindow.xaml.cs">
       <DependentUpon>FiltersWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageModel.cs" />
     <Compile Include="IProcessing.cs" />
     <Compile Include="Processing.cs" />
     <Compile Include="Services\CloudService.cs" />

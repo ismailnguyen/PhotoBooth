@@ -1,9 +1,14 @@
 ﻿using PhotoBooth.Common;
 using PhotoBooth.Services;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -23,6 +28,9 @@ namespace PhotoBooth
         {
             InitializeComponent();
 
+            
+
+            
             _bitmap = bitmap;
             _photoName = photoName;
             _cloudService = new CloudService();
@@ -30,10 +38,33 @@ namespace PhotoBooth
 
             loadPictures();
         }
-
+        public ObservableCollection<string> ImageList
+        {
+            get
+            {
+                var results = new ObservableCollection<string>();
+                var ListImage = getListImage();
+                foreach (var image in ListImage)
+                {
+                    results.Add(image.ToString());
+                }
+                return results;
+            }
+        }
         /// <summary>
         /// Load filtered image presets
         /// </summary>
+        /// 
+        private IEnumerable<string> getListImage()
+        {
+            /* DirectoryInfo di = new DirectoryInfo(@"C:\Users\kevin\Desktop\4aAL\C#\PhotoBooth\bin\Debug");
+             FileInfo[] Images = di.GetFiles("*.jpg");*/
+            string root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
+            var files = Directory.GetFiles(Path.Combine(root, "Images"), "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
+
+            return files;
+        }
         private async void loadPictures()
         {
             await Task.Run(() => loadPhoto());
@@ -101,6 +132,47 @@ namespace PhotoBooth
         private void saveCloud()
         {
             _cloudService.Upload(_photoName);
+        }
+        List<ImageModel> images = new List<ImageModel>();
+        IEnumerable<string> files;
+        private void LoadImageList(object sender, RoutedEventArgs e)
+        {
+            string root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
+            files = Directory.GetFiles(Path.Combine(root), "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
+
+            List<ImageModel> test = new List<ImageModel>();
+            foreach (var file in files)
+            {
+               
+                ImageModel id = new ImageModel()
+                {
+                    Path = new BitmapImage(new Uri(file.ToString())),
+                    FileName = Path.GetFileName(file),
+                };
+                test.Add(id);
+               /* BitmapImage img = new BitmapImage();
+                img.BeginInit();
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.UriSource = new Uri(file, UriKind.Absolute);
+                img.EndInit();
+                id.Width = img.PixelWidth;
+                id.Height = img.PixelHeight;
+
+                // I couldn't find file size in BitmapImage
+                FileInfo fi = new FileInfo(file);
+                id.Size = fi.Length;
+                images.Add(id);*/
+            }
+            this.Thumbnails.ItemsSource = test;
+
+
+        }
+
+        private void item_clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+           
+            MessageBox.Show(sender.ToString());
         }
     }
 }
