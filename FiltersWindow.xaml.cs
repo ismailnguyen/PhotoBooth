@@ -27,10 +27,8 @@ namespace PhotoBooth
         public FiltersWindow(string photoName, Bitmap bitmap)
         {
             InitializeComponent();
+           
 
-            
-
-            
             _bitmap = bitmap;
             _photoName = photoName;
             _cloudService = new CloudService();
@@ -123,7 +121,10 @@ namespace PhotoBooth
         /// </summary>
         private void saveLocal()
         {
-            _bitmap.Save(_photoName);
+            Bitmap temp = new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat);
+            temp.Save(_photoName);
+            temp.Dispose();
+            _bitmap.Dispose();
         }
 
         /// <summary>
@@ -152,47 +153,28 @@ namespace PhotoBooth
                     Name = Path.GetFileName(file)
                 };
                 test.Add(id);
-               /* BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.UriSource = new Uri(file, UriKind.Absolute);
-                img.EndInit();
-                id.Width = img.PixelWidth;
-                id.Height = img.PixelHeight;
-
-                // I couldn't find file size in BitmapImage
-                FileInfo fi = new FileInfo(file);
-                id.Size = fi.Length;
-                images.Add(id);*/
             }
             this.Thumbnails.ItemsSource = test;
 
 
         }
 
-        private void item_clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        
+
+        private void selectedChange(object sender, SelectionChangedEventArgs e)
         {
+            ImageModel test = (ImageModel)((ListBox)sender).SelectedValue;
+            System.IO.FileStream fileStream = new System.IO.FileStream(test.FileName.ToString(), System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            Bitmap img = new Bitmap(fileStream);
+            fileStream.Close();
+            _bitmap = img;
            
-            MessageBox.Show(sender.ToString());
+            _photoName = test.FileName.ToString();
+
+            loadPictures();
+
         }
 
-        private ListBoxItem _selectedSection;
-        public ListBoxItem SelectedSection
-        {
-            get {
-                MessageBox.Show(_selectedSection.ToString());
 
-                return _selectedSection; }
-            set
-            {
-                _selectedSection = value;
-                RaisePropertyChanged("SelectedSection");
-            }
-        }
-
-        private void RaisePropertyChanged(string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

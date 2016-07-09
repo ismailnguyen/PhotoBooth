@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Image Name="photo" Grid.Column="0" />
-            <ListBox Grid.Column="1" Name="Thumbnails" SelectedItem="{Binding SelectedSection}">
+            <ListBox Grid.Column="1" Name="Thumbnails" SelectionChanged="selectedChange" SelectedItem="{Binding SelectedSection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" >
