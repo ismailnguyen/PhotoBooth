@@ -156,16 +156,16 @@ namespace PhotoBooth
         {
             Label txt = new Label();
             txt.Name = "txt";
-            //-30 taille souris , -250 je sais pas ...
+            //-45 taille souris , -230 je sais pas ...
 
             txt.Margin = new Thickness(e.GetPosition(this).X-230, e.GetPosition(this).Y - 45, 0, 0);
-           // var dialog = new Dialog();
-            string tagName = "dzdz";
-          /*  if (dialog.ShowDialog() == true)
+            var dialog = new Dialog();
+            string tagName = "";
+            if (dialog.ShowDialog() == true)
             {
                 tagName = dialog.TagName;
             }
-            */
+            
             txt.Content = tagName;
             labelList.Add(txt);
             stackPanel.Children.Add(txt);
