@@ -9,12 +9,8 @@ namespace PhotoBooth
 {
     class ImageModel
     {
-        public string Name { get; set; }
         public BitmapImage Path { get; set; }
         public string FileName { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
-        public long Size { get; set; }
 
     }
 }

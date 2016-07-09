@@ -39,7 +39,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" >
                             <Image Margin="3" Height="100" Width="100" Source="{Binding Path}"/>
-                            <TextBlock Margin="3"  Text="{Binding Name}"/>
+                            <TextBlock Margin="3"  Text="{Binding FileName}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

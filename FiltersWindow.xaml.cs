@@ -36,33 +36,12 @@ namespace PhotoBooth
 
             loadPictures();
         }
-        public ObservableCollection<string> ImageList
-        {
-            get
-            {
-                var results = new ObservableCollection<string>();
-                var ListImage = getListImage();
-                foreach (var image in ListImage)
-                {
-                    results.Add(image.ToString());
-                }
-                return results;
-            }
-        }
+
         /// <summary>
         /// Load filtered image presets
         /// </summary>
         /// 
-        private IEnumerable<string> getListImage()
-        {
-            /* DirectoryInfo di = new DirectoryInfo(@"C:\Users\kevin\Desktop\4aAL\C#\PhotoBooth\bin\Debug");
-             FileInfo[] Images = di.GetFiles("*.jpg");*/
-            string root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
-            var files = Directory.GetFiles(Path.Combine(root, "Images"), "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
 
-            return files;
-        }
         private async void loadPictures()
         {
             await Task.Run(() => loadPhoto());
@@ -124,7 +103,6 @@ namespace PhotoBooth
             Bitmap temp = new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat);
             temp.Save(_photoName);
             temp.Dispose();
-            _bitmap.Dispose();
         }
 
         /// <summary>
@@ -134,15 +112,14 @@ namespace PhotoBooth
         {
             _cloudService.Upload(_photoName);
         }
-        List<ImageModel> images = new List<ImageModel>();
-        IEnumerable<string> files;
+
         private void LoadImageList(object sender, RoutedEventArgs e)
         {
             string root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
-            files = Directory.GetFiles(Path.Combine(root), "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
+            var files = Directory.GetFiles(Path.Combine(root), "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
 
-            List<ImageModel> test = new List<ImageModel>();
+            List<ImageModel> ListImage = new List<ImageModel>();
             foreach (var file in files)
             {
 
@@ -150,11 +127,10 @@ namespace PhotoBooth
                 {
                     Path = new BitmapImage(new Uri(file.ToString())),
                     FileName = Path.GetFileName(file),
-                    Name = Path.GetFileName(file)
                 };
-                test.Add(id);
+                ListImage.Add(id);
             }
-            this.Thumbnails.ItemsSource = test;
+            this.Thumbnails.ItemsSource = ListImage;
 
 
         }
@@ -163,13 +139,13 @@ namespace PhotoBooth
 
         private void selectedChange(object sender, SelectionChangedEventArgs e)
         {
-            ImageModel test = (ImageModel)((ListBox)sender).SelectedValue;
-            System.IO.FileStream fileStream = new System.IO.FileStream(test.FileName.ToString(), System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            ImageModel image = (ImageModel)((ListBox)sender).SelectedValue;
+            System.IO.FileStream fileStream = new System.IO.FileStream(image.FileName.ToString(), System.IO.FileMode.Open, System.IO.FileAccess.Read);
             Bitmap img = new Bitmap(fileStream);
             fileStream.Close();
             _bitmap = img;
            
-            _photoName = test.FileName.ToString();
+            _photoName = image.FileName.ToString();
 
             loadPictures();
 
