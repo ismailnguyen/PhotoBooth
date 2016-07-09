@@ -33,7 +33,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
-            <Image Name="photo" Grid.Column="0" />
+            <Canvas Name="stackPanel" Grid.Column="0">
+                <Image Name="photo"  Height="400" Width="400"  HorizontalAlignment="Center"  MouseLeftButtonDown="add_tags"/>
+            </Canvas>
+
             <ListBox Grid.Column="1" Name="Thumbnails" SelectionChanged="selectedChange" SelectedItem="{Binding SelectedSection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

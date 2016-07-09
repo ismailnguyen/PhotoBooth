@@ -1,4 +1,5 @@
-﻿using PhotoBooth.Common;
+﻿using PhotoBooth;
+using PhotoBooth.Common;
 using PhotoBooth.Services;
 using System;
 using System.Collections.Generic;
@@ -100,9 +101,9 @@ namespace PhotoBooth
         /// </summary>
         private void saveLocal()
         {
-            Bitmap temp = new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat);
-            temp.Save(_photoName);
-            temp.Dispose();
+
+            _bitmap.Save(_photoName);
+
         }
 
         /// <summary>
@@ -151,6 +152,20 @@ namespace PhotoBooth
 
         }
 
+        private void add_tags(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Label txt = new Label();
+            txt.Name = "txt";
+            txt.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y - 30, 0, 0);
+            var dialog = new Dialog();
+            string tagName = "";
+            if (dialog.ShowDialog() == true)
+            {
+                tagName = dialog.TagName;
+            }
 
+            txt.Content = tagName;
+            stackPanel.Children.Add(txt);
+        }
     }
 }
