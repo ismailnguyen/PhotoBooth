@@ -34,7 +34,7 @@ namespace PhotoBooth
             _photoName = photoName;
             _cloudService = new CloudService();
             _proccessing = new Processing(bitmap);
-
+            tag_display.IsChecked = true;
             loadPictures();
         }
 
@@ -151,21 +151,42 @@ namespace PhotoBooth
             loadPictures();
 
         }
-
+        List<Label> labelList = new List<Label>();
         private void add_tags(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Label txt = new Label();
             txt.Name = "txt";
-            txt.Margin = new Thickness(e.GetPosition(this).X, e.GetPosition(this).Y - 30, 0, 0);
-            var dialog = new Dialog();
-            string tagName = "";
-            if (dialog.ShowDialog() == true)
+            //-30 taille souris , -250 je sais pas ...
+
+            txt.Margin = new Thickness(e.GetPosition(this).X-230, e.GetPosition(this).Y - 45, 0, 0);
+           // var dialog = new Dialog();
+            string tagName = "dzdz";
+          /*  if (dialog.ShowDialog() == true)
             {
                 tagName = dialog.TagName;
             }
-
+            */
             txt.Content = tagName;
+            labelList.Add(txt);
             stackPanel.Children.Add(txt);
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (Label lbl in labelList)
+            {
+                lbl.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (Label lbl in labelList)
+            {
+                lbl.Visibility = Visibility.Hidden;
+            }
+        }
+
+       
     }
 }

@@ -33,8 +33,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
-            <Canvas Name="stackPanel" Grid.Column="0">
-                <Image Name="photo"  Height="400" Width="400"  HorizontalAlignment="Center"  MouseLeftButtonDown="add_tags"/>
+            <Canvas Name="stackPanel" Grid.Column="0" Height="450" Width="450" >
+                <Image Name="photo" Height="400" Width="400"  MouseLeftButtonDown="add_tags"/>
+                <CheckBox Name="tag_display" Margin="200,410,0,0" Content="Display Tags" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
             </Canvas>
 
             <ListBox Grid.Column="1" Name="Thumbnails" SelectionChanged="selectedChange" SelectedItem="{Binding SelectedSection}">
