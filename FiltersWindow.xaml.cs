@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +25,9 @@ namespace PhotoBooth
         public string _photoName { get; set; }
         private CloudService _cloudService;
         private IProcessing _proccessing;
+        private string tagFileName = "tags.csv";
+        List<Label> labelList = new List<Label>();
+        List<string> labelinfos = new List<string>();
 
         public FiltersWindow(string photoName, Bitmap bitmap)
         {
@@ -53,6 +57,18 @@ namespace PhotoBooth
             Dispatcher.Invoke((() =>
             {
                 photo.Source = BitmapUtils.loadBitmap(_bitmap);
+            }));
+        }
+
+        private async void loadTags()
+        {
+            await Task.Run(() => loadTag());
+        }
+        private void loadTag()
+        {
+            Dispatcher.Invoke((() =>
+            {
+                checkExistedTag();
             }));
         }
 
@@ -149,9 +165,9 @@ namespace PhotoBooth
             _photoName = image.FileName.ToString();
 
             loadPictures();
+            loadTags();
 
         }
-        List<Label> labelList = new List<Label>();
         private void add_tags(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Label txt = new Label();
@@ -164,11 +180,14 @@ namespace PhotoBooth
             if (dialog.ShowDialog() == true)
             {
                 tagName = dialog.TagName;
+                txt.Content = tagName;
+                string lblInfo = $"{ txt.Margin.Left},{ txt.Margin.Top},{tagName}";
+                labelinfos.Add(lblInfo);
+                labelList.Add(txt);
+                stackPanel.Children.Add(txt);
+                RightCSV();
             }
             
-            txt.Content = tagName;
-            labelList.Add(txt);
-            stackPanel.Children.Add(txt);
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -187,6 +206,110 @@ namespace PhotoBooth
             }
         }
 
+        private void RightCSV()
+        {
+
+            bool added = false;
+            List<string> lines = new List<string>();
+            
+            if (File.Exists(tagFileName))
+            {
+                lines = File.ReadAllLines(tagFileName).ToList();
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    string line = lines[i];
+                    if (line.Contains(","))
+                    {
+                        var split = line.Split(',');
+                        if (split[0].Equals(_photoName))
+                        {
+                            string labels = "";
+                            foreach (string lbl in labelinfos)
+                            {
+                                if (labels.Equals(""))
+                                {
+                                    labels = lbl;
+                                }
+                                else
+                                {
+                                    labels += "," + lbl;
+                                }
+                            }
+                            lines[i] = $"{split[0]},{labels}";
+                            added = true;
+                        }
+                    }
+                }
+            }
+            if (!added)
+            {
+                string labels = "";
+                foreach (string lbl in labelinfos)
+                {
+                    if (labelinfos.Count == 1)
+                    {
+                        labels = lbl;
+                    }
+                    else
+                    {
+                        labels += "," + lbl;
+                    }
+                }
+                lines.Add($"{_photoName},{labels}");
+            }
+
+            //after your loop
+            File.WriteAllLines(tagFileName, lines);
+        }
+
+        private void checkExistedTag()
+        {
+            for(int k = 0; k< stackPanel.Children.Count; k++)
+            {
+                if (k > 1)
+                {
+                    stackPanel.Children.RemoveAt(k);
+                }
+            }
+            List<string> lines = new List<string>();
+            if (File.Exists(tagFileName))
+            {
+                lines = File.ReadAllLines(tagFileName).ToList();
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    string line = lines[i];
+                    if (line.Contains(","))
+                    {
+                        var split = line.Split(',');
+                        if (split[0].Equals(_photoName))
+                        {
+                            string labels = "";
+                            for(int j= 1; j< split.Length; j+=3)
+                            {
+                                addExistedTag(int.Parse(split[j]), int.Parse(split[j + 1]), split[j + 2]);
+                            }
+                           
+                        }
+                    }
+                }
+            }
+
+        }
        
+        private void addExistedTag(int X, int Y , string name)
+        {
+
+            Label txt = new Label();
+            txt.Name = "txt";
+            //-45 taille souris , -230 je sais pas ...
+
+            txt.Margin = new Thickness(X, Y, 0, 0);
+            txt.Content = name;
+            string lblInfo = $"{X},{Y},{name}";
+            labelinfos.Add(lblInfo);
+            labelList.Add(txt);
+            stackPanel.Children.Add(txt);
+            MessageBox.Show("added" + X + " // " + Y);
+        }
     }
 }
