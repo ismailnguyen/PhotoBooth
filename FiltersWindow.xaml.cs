@@ -165,6 +165,13 @@ namespace PhotoBooth
             _photoName = image.FileName.ToString();
 
             loadPictures();
+            labelList.RemoveRange(0,labelList.Count);
+            labelinfos.RemoveRange(0, labelinfos.Count);
+            if (stackPanel.Children.Count > 2)
+            {
+                MessageBox.Show(stackPanel.Children.Count.ToString());
+                stackPanel.Children.RemoveRange(2, stackPanel.Children.Count);
+            }
             loadTags();
 
         }
@@ -180,12 +187,14 @@ namespace PhotoBooth
             if (dialog.ShowDialog() == true)
             {
                 tagName = dialog.TagName;
-                txt.Content = tagName;
-                string lblInfo = $"{ txt.Margin.Left},{ txt.Margin.Top},{tagName}";
-                labelinfos.Add(lblInfo);
-                labelList.Add(txt);
-                stackPanel.Children.Add(txt);
-                RightCSV();
+                if (tagName.Length > 1) { 
+                    txt.Content = tagName;
+                    string lblInfo = $"{ txt.Margin.Left},{ txt.Margin.Top},{tagName}";
+                    labelinfos.Add(lblInfo);
+                    labelList.Add(txt);
+                    stackPanel.Children.Add(txt);
+                    RightCSV();
+                }
             }
             
         }
@@ -264,13 +273,9 @@ namespace PhotoBooth
 
         private void checkExistedTag()
         {
-            for(int k = 0; k< stackPanel.Children.Count; k++)
-            {
-                if (k > 1)
-                {
-                    stackPanel.Children.RemoveAt(k);
-                }
-            }
+            
+           
+            
             List<string> lines = new List<string>();
             if (File.Exists(tagFileName))
             {
@@ -293,6 +298,12 @@ namespace PhotoBooth
                     }
                 }
             }
+            if(tag_display.IsChecked == false) {
+                foreach (Label lbl in labelList)
+                {
+                    lbl.Visibility = Visibility.Hidden;
+                }
+            }
 
         }
        
@@ -309,7 +320,6 @@ namespace PhotoBooth
             labelinfos.Add(lblInfo);
             labelList.Add(txt);
             stackPanel.Children.Add(txt);
-            MessageBox.Show("added" + X + " // " + Y);
         }
     }
 }
