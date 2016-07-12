@@ -13,6 +13,8 @@
     ShowMaxRestoreButton="True"
     ShowIconOnTitleBar="True"
     Height="700" Width="1200"
+    MinHeight="660"
+    MinWidth="900"
     
     Icon="Assets/small-logo.png"
     ResizeMode="CanResizeWithGrip"
@@ -35,7 +37,7 @@
             </Grid.ColumnDefinitions>
             <Canvas Name="stackPanel" Grid.Column="0" Height="450" Width="450" >
                 <Image Name="photo" Height="400" Width="400"  MouseLeftButtonDown="add_tags"/>
-                <CheckBox Name="tag_display" Margin="200,410,0,0" Content="Display Tags" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                <CheckBox Name="tag_display" Margin="200,380,0,0" Content="Display Tags" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
             </Canvas>
 
             <ListBox Grid.Column="1" Name="Thumbnails" SelectionChanged="selectedChange" SelectedItem="{Binding SelectedSection}">
@@ -51,7 +53,7 @@
 
         </Grid>
         
-        <Grid Grid.Row="1"  Width="1192">
+        <Grid Grid.Row="1"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

@@ -117,8 +117,19 @@ namespace PhotoBooth
         /// </summary>
         private void saveLocal()
         {
-
-            _bitmap.Save(_photoName);
+            try
+            {
+                _bitmap.Save(_photoName);
+            }catch(Exception e)
+            {
+                Console.WriteLine(e);
+                string photoName = string.Format(
+                           "{0}-{1}.jpg",
+                           "PhotoBooth",
+                           DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")
+                       );
+                _bitmap.Save(photoName);
+            }
 
         }
 
@@ -288,7 +299,6 @@ namespace PhotoBooth
                         var split = line.Split(',');
                         if (split[0].Equals(_photoName))
                         {
-                            string labels = "";
                             for(int j= 1; j< split.Length; j+=3)
                             {
                                 addExistedTag(int.Parse(split[j]), int.Parse(split[j + 1]), split[j + 2]);

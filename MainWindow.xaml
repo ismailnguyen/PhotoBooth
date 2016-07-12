@@ -12,6 +12,9 @@
     ShowMaxRestoreButton="True"
     ShowIconOnTitleBar="True"
     
+    MinHeight="660"
+    MinWidth="900"
+    
     Icon="Assets/small-logo.png"
     ResizeMode="CanResizeWithGrip"
     BorderThickness="0" 
