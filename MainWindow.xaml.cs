@@ -13,13 +13,10 @@ namespace PhotoBooth
     /// </summary>
     public partial class MainWindow
     {
-        private CloudService _cloudService;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            _cloudService = new CloudService();
 
             Loaded += new RoutedEventHandler(MainWindowLoaded);   
         }

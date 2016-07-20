@@ -32,11 +32,11 @@ namespace PhotoBooth
         public FiltersWindow(string photoName, Bitmap bitmap)
         {
             InitializeComponent();
-           
-
-            _bitmap = bitmap;
+          
+            _bitmap = new Bitmap(bitmap);
             _photoName = photoName;
-            _cloudService = new CloudService();
+            if(Network.CheckForInternetConnection())
+                _cloudService = new CloudService();
             _proccessing = new Processing(bitmap);
             tag_display.IsChecked = true;
             loadPictures();
@@ -104,7 +104,8 @@ namespace PhotoBooth
         public void Save(object sender, RoutedEventArgs e)
         {
             saveLocal();
-            saveCloud();
+            if(Network.CheckForInternetConnection())
+                saveCloud();
         }
 
         public void Cancel(object sender, RoutedEventArgs e)
@@ -159,8 +160,6 @@ namespace PhotoBooth
                 ListImage.Add(id);
             }
             this.Thumbnails.ItemsSource = ListImage;
-
-
         }
 
         
@@ -180,7 +179,7 @@ namespace PhotoBooth
             labelinfos.RemoveRange(0, labelinfos.Count);
             if (stackPanel.Children.Count > 2)
             {
-                MessageBox.Show(stackPanel.Children.Count.ToString());
+               // MessageBox.Show(stackPanel.Children.Count.ToString());
                 stackPanel.Children.RemoveRange(2, stackPanel.Children.Count);
             }
             loadTags();
@@ -283,10 +282,7 @@ namespace PhotoBooth
         }
 
         private void checkExistedTag()
-        {
-            
-           
-            
+        {   
             List<string> lines = new List<string>();
             if (File.Exists(tagFileName))
             {

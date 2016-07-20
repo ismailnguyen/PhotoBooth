@@ -35,7 +35,7 @@ namespace PhotoBooth
         private void transforme(Bitmap picture)
         {
             //set picture
-            this.picture = picture;
+            this.picture = new Bitmap(picture);
 
             //get dimension
             width = picture.Width;
